@@ -397,6 +397,22 @@
       return new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(timestamp * 1000));
     }
 
+    function formatActionTime(timestamp) {
+      if (!timestamp) return "文件列表已更新";
+      const date = new Date(timestamp);
+      if (Number.isNaN(date.getTime())) return "文件列表已更新";
+      const formattedDate = new Intl.DateTimeFormat("zh-CN", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).format(date);
+      return `Action 完成时间：${formattedDate}`;
+    }
+
     function fileType(name) {
       const extension = name.split(".").pop();
       return extension && extension !== name ? extension.slice(0, 5).toUpperCase() : "FILE";
@@ -409,9 +425,9 @@
       listElement.append(item);
     }
 
-    function renderFiles(files) {
+    function renderFiles(files, actionCompletedAt) {
       listElement.replaceChildren();
-      syncStatusElement.textContent = "文件列表已更新";
+      syncStatusElement.textContent = formatActionTime(actionCompletedAt);
       if (!files.length) {
         statusElement.textContent = "0 个文件";
         renderEmptyState("根目录暂无文件");
@@ -475,7 +491,7 @@
         if (!response.ok) throw new Error("文件列表请求失败");
         return response.json();
       })
-      .then((data) => renderFiles(Array.isArray(data.files) ? data.files : []))
+      .then((data) => renderFiles(Array.isArray(data.files) ? data.files : [], data.action_completed_at))
       .catch(() => {
         syncStatusElement.textContent = "暂时无法读取";
         statusElement.textContent = "加载失败";
