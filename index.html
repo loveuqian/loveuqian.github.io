@@ -55,6 +55,72 @@
     a:hover {
       background: #1d4ed8;
     }
+
+    .files {
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid #e5e7eb;
+      text-align: left;
+    }
+
+    .files h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+
+    .files-status {
+      margin: 0;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .file-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+    }
+
+    .file-name {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      color: #1f2937;
+      text-decoration: none;
+    }
+
+    .file-name[href]:hover {
+      color: #2563eb;
+    }
+
+    .file-meta {
+      flex: 0 0 auto;
+      color: #6b7280;
+      font-size: 13px;
+      text-align: right;
+    }
+
+    @media (max-width: 520px) {
+      .file-item {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .file-meta {
+        text-align: left;
+      }
+    }
   </style>
 </head>
 <body>
@@ -62,6 +128,69 @@
     <h1>你好，欢迎来到我的小站</h1>
     <p>这里是一个正在慢慢成长的静态网页。以后会放上更多作品、想法和日常记录。</p>
     <a href="https://github.com/loveuqian">访问我的 GitHub</a>
+    <section class="files" aria-labelledby="files-title">
+      <h2 id="files-title">文件列表</h2>
+      <p class="files-status" id="files-status">正在加载文件列表…</p>
+      <ul class="file-list" id="file-list"></ul>
+    </section>
   </main>
+  <script>
+    const statusElement = document.getElementById("files-status");
+    const listElement = document.getElementById("file-list");
+
+    function formatSize(bytes) {
+      if (!bytes) return "0 B";
+      const units = ["B", "KB", "MB", "GB", "TB"];
+      const unitIndex = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+      return `${(bytes / (1024 ** unitIndex)).toFixed(unitIndex ? 1 : 0)} ${units[unitIndex]}`;
+    }
+
+    function formatDate(timestamp) {
+      if (!timestamp) return "时间未知";
+      return new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "short", day: "numeric" }).format(new Date(timestamp * 1000));
+    }
+
+    function renderFiles(files) {
+      listElement.replaceChildren();
+      if (!files.length) {
+        statusElement.textContent = "根目录暂无文件。";
+        return;
+      }
+
+      statusElement.textContent = `共 ${files.length} 个文件`;
+      files.forEach((file) => {
+        const item = document.createElement("li");
+        item.className = "file-item";
+
+        const name = document.createElement(file.download_url ? "a" : "span");
+        name.className = "file-name";
+        name.textContent = file.name;
+        if (file.download_url) {
+          name.href = file.download_url;
+          name.target = "_blank";
+          name.rel = "noopener noreferrer";
+        }
+
+        const meta = document.createElement("span");
+        meta.className = "file-meta";
+        meta.textContent = file.download_url
+          ? `${formatSize(file.size)} · ${formatDate(file.last_modified)}`
+          : `${formatSize(file.size)} · 暂无公开下载地址`;
+
+        item.append(name, meta);
+        listElement.append(item);
+      });
+    }
+
+    fetch("data/files.json", { cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) throw new Error("文件列表请求失败");
+        return response.json();
+      })
+      .then((data) => renderFiles(Array.isArray(data.files) ? data.files : []))
+      .catch(() => {
+        statusElement.textContent = "文件列表加载失败，请稍后重试。";
+      });
+  </script>
 </body>
 </html>
