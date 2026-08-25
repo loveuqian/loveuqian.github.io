@@ -125,6 +125,7 @@ def main():
     output = {
         "bucket": bucket,
         "folder": "/" if folder == "/" else "/" + folder.strip("/") + "/",
+        "action_completed_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "files": files,
     }
     output_path = Path(os.environ.get("UPYUN_OUTPUT", "data/files.json"))
