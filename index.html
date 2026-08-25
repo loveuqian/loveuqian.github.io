@@ -3,75 +3,153 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Loveuqian 的小站</title>
+  <meta name="theme-color" content="#f4f7fb">
+  <title>文件下载</title>
   <style>
     :root {
       color-scheme: light;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f7fb;
-      color: #1f2937;
+      background: #f4f7fb;
+      color: #18212f;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       margin: 0;
+      min-width: 320px;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
+      background: #f4f7fb;
     }
 
-    main {
-      width: min(680px, calc(100% - 40px));
-      padding: 56px 32px;
-      box-sizing: border-box;
-      text-align: center;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      box-shadow: 0 18px 50px rgba(31, 41, 55, 0.08);
+    .site-shell {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 52px 0 28px;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid #dfe6ef;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 8px;
+      background: #1f67d1;
+      color: #ffffff;
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0;
     }
 
     h1 {
-      margin: 0 0 16px;
-      font-size: clamp(32px, 7vw, 56px);
+      font-size: 34px;
+      font-weight: 700;
       letter-spacing: 0;
+      line-height: 1.2;
     }
 
-    p {
-      margin: 0 auto 28px;
-      max-width: 460px;
-      line-height: 1.8;
-      color: #6b7280;
+    .brand-path {
+      margin-top: 6px;
+      color: #718096;
+      font-size: 14px;
     }
 
-    a {
-      display: inline-block;
-      padding: 12px 22px;
-      border-radius: 8px;
-      background: #2563eb;
-      color: #ffffff;
-      text-decoration: none;
+    .sync-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid #dfe6ef;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #5f6b7a;
+      font-size: 13px;
+      white-space: nowrap;
     }
 
-    a:hover {
-      background: #1d4ed8;
+    .sync-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #1d9a70;
     }
 
-    .files {
-      margin-top: 40px;
-      padding-top: 28px;
-      border-top: 1px solid #e5e7eb;
-      text-align: left;
+    main {
+      padding-top: 34px;
     }
 
-    .files h2 {
-      margin: 0 0 14px;
-      font-size: 20px;
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 650;
+      line-height: 1.4;
     }
 
     .files-status {
-      margin: 0;
-      color: #6b7280;
+      color: #718096;
       font-size: 14px;
+    }
+
+    .table-head,
+    .file-item {
+      display: grid;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .table-head {
+      grid-template-columns: minmax(0, 1fr) 78px 110px 88px;
+    }
+
+    .file-item {
+      grid-template-columns: minmax(0, 1fr) 180px 88px;
+    }
+
+    .table-head {
+      padding: 0 18px 9px;
+      color: #8995a5;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .table-head span:nth-child(2),
+    .table-head span:nth-child(3) {
+      text-align: right;
+    }
+
+    .table-head span:last-child {
+      text-align: center;
     }
 
     .file-list {
@@ -83,59 +161,228 @@
     }
 
     .file-item {
+      min-height: 72px;
+      padding: 14px 18px;
+      border: 1px solid #dfe6ef;
+      border-radius: 8px;
+      background: #ffffff;
+      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+
+    .file-item:hover {
+      border-color: #b9cbe4;
+      box-shadow: 0 8px 24px rgba(31, 61, 96, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .file-info {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 12px 14px;
-      border: 1px solid #e5e7eb;
+      min-width: 0;
+      gap: 12px;
+    }
+
+    .file-type {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      flex: 0 0 36px;
+      place-items: center;
       border-radius: 8px;
+      background: #e8f1ff;
+      color: #1f67d1;
+      font-size: 10px;
+      font-weight: 700;
     }
 
     .file-name {
       min-width: 0;
       overflow-wrap: anywhere;
-      color: #1f2937;
-      text-decoration: none;
-    }
-
-    .file-name[href]:hover {
-      color: #2563eb;
+      color: #263447;
+      font-size: 15px;
+      font-weight: 550;
+      line-height: 1.45;
     }
 
     .file-meta {
-      flex: 0 0 auto;
-      color: #6b7280;
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+      color: #718096;
       font-size: 13px;
       text-align: right;
+      white-space: nowrap;
     }
 
-    @media (max-width: 520px) {
-      .file-item {
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-height: 34px;
+      padding: 7px 10px;
+      border-radius: 7px;
+      background: #1f67d1;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .download-link:hover {
+      background: #1557b0;
+    }
+
+    .download-icon {
+      font-size: 16px;
+      line-height: 12px;
+    }
+
+    .download-link.is-disabled {
+      background: #edf1f5;
+      color: #9aa5b1;
+      cursor: not-allowed;
+    }
+
+    .empty-state {
+      padding: 42px 18px;
+      border: 1px dashed #cbd6e3;
+      border-radius: 8px;
+      color: #718096;
+      text-align: center;
+    }
+
+    footer {
+      padding-top: 30px;
+      color: #9aa5b1;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .site-shell {
+        width: min(100% - 28px, 620px);
+        padding-top: 30px;
+      }
+
+      .site-header {
         align-items: flex-start;
         flex-direction: column;
-        gap: 6px;
+        gap: 18px;
+        padding-bottom: 22px;
+      }
+
+      h1 {
+        font-size: 29px;
+      }
+
+      .sync-status {
+        align-self: stretch;
+        justify-content: center;
+      }
+
+      main {
+        padding-top: 26px;
+      }
+
+      .table-head {
+        display: none;
+      }
+
+      .file-item {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px 14px;
+        padding: 14px;
+      }
+
+      .file-info {
+        grid-column: 1;
       }
 
       .file-meta {
+        grid-column: 1;
+        justify-content: flex-start;
+        gap: 10px;
+        font-size: 12px;
         text-align: left;
+      }
+
+      .download-link {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .site-shell {
+        width: calc(100% - 20px);
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        flex-basis: 38px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .file-name {
+        font-size: 14px;
+      }
+
+      .file-meta {
+        display: block;
+        line-height: 1.6;
+      }
+
+      .file-meta span + span::before {
+        margin: 0 5px;
+        content: "·";
       }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>你好，欢迎来到我的小站</h1>
-    <p>这里是一个正在慢慢成长的静态网页。以后会放上更多作品、想法和日常记录。</p>
-    <a href="https://github.com/loveuqian">访问我的 GitHub</a>
-    <section class="files" aria-labelledby="files-title">
-      <h2 id="files-title">文件列表</h2>
-      <p class="files-status" id="files-status">正在加载文件列表…</p>
-      <ul class="file-list" id="file-list"></ul>
-    </section>
-  </main>
+  <div class="site-shell">
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">↓</span>
+        <div>
+          <h1>文件下载</h1>
+          <p class="brand-path">wsf-upyun / 根目录</p>
+        </div>
+      </div>
+      <div class="sync-status">
+        <span class="sync-dot" aria-hidden="true"></span>
+        <span id="sync-status">正在读取文件列表</span>
+      </div>
+    </header>
+
+    <main>
+      <section aria-labelledby="files-title">
+        <div class="section-heading">
+          <h2 id="files-title">文件列表</h2>
+          <p class="files-status" id="files-status">正在加载</p>
+        </div>
+        <div class="table-head" aria-hidden="true">
+          <span>文件名</span>
+          <span>大小</span>
+          <span>更新时间</span>
+          <span>操作</span>
+        </div>
+        <ul class="file-list" id="file-list"></ul>
+      </section>
+    </main>
+
+    <footer>wsf-upyun</footer>
+  </div>
+
   <script>
     const statusElement = document.getElementById("files-status");
+    const syncStatusElement = document.getElementById("sync-status");
     const listElement = document.getElementById("file-list");
 
     function formatSize(bytes) {
@@ -147,37 +394,78 @@
 
     function formatDate(timestamp) {
       if (!timestamp) return "时间未知";
-      return new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "short", day: "numeric" }).format(new Date(timestamp * 1000));
+      return new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(timestamp * 1000));
+    }
+
+    function fileType(name) {
+      const extension = name.split(".").pop();
+      return extension && extension !== name ? extension.slice(0, 5).toUpperCase() : "FILE";
+    }
+
+    function renderEmptyState(message) {
+      const item = document.createElement("li");
+      item.className = "empty-state";
+      item.textContent = message;
+      listElement.append(item);
     }
 
     function renderFiles(files) {
       listElement.replaceChildren();
+      syncStatusElement.textContent = "文件列表已更新";
       if (!files.length) {
-        statusElement.textContent = "根目录暂无文件。";
+        statusElement.textContent = "0 个文件";
+        renderEmptyState("根目录暂无文件");
         return;
       }
 
-      statusElement.textContent = `共 ${files.length} 个文件`;
+      statusElement.textContent = `${files.length} 个文件`;
       files.forEach((file) => {
         const item = document.createElement("li");
         item.className = "file-item";
 
-        const name = document.createElement(file.download_url ? "a" : "span");
+        const info = document.createElement("div");
+        info.className = "file-info";
+
+        const type = document.createElement("span");
+        type.className = "file-type";
+        type.setAttribute("aria-hidden", "true");
+        type.textContent = fileType(file.name);
+
+        const name = document.createElement("span");
         name.className = "file-name";
         name.textContent = file.name;
+        info.append(type, name);
+
+        const meta = document.createElement("div");
+        meta.className = "file-meta";
+
+        const size = document.createElement("span");
+        size.textContent = formatSize(file.size);
+
+        const date = document.createElement("span");
+        date.textContent = formatDate(file.last_modified);
+        meta.append(size, date);
+
+        const action = document.createElement(file.download_url ? "a" : "span");
+        action.className = "download-link";
         if (file.download_url) {
-          name.href = file.download_url;
-          name.target = "_blank";
-          name.rel = "noopener noreferrer";
+          action.href = file.download_url;
+          action.target = "_blank";
+          action.rel = "noopener noreferrer";
+          action.setAttribute("aria-label", `下载 ${file.name}`);
+
+          const icon = document.createElement("span");
+          icon.className = "download-icon";
+          icon.setAttribute("aria-hidden", "true");
+          icon.textContent = "↓";
+          action.append(icon, document.createTextNode("下载"));
+        } else {
+          action.classList.add("is-disabled");
+          action.textContent = "不可用";
+          action.setAttribute("aria-label", `${file.name} 暂无下载地址`);
         }
 
-        const meta = document.createElement("span");
-        meta.className = "file-meta";
-        meta.textContent = file.download_url
-          ? `${formatSize(file.size)} · ${formatDate(file.last_modified)}`
-          : `${formatSize(file.size)} · 暂无公开下载地址`;
-
-        item.append(name, meta);
+        item.append(info, meta, action);
         listElement.append(item);
       });
     }
@@ -189,7 +477,10 @@
       })
       .then((data) => renderFiles(Array.isArray(data.files) ? data.files : []))
       .catch(() => {
-        statusElement.textContent = "文件列表加载失败，请稍后重试。";
+        syncStatusElement.textContent = "暂时无法读取";
+        statusElement.textContent = "加载失败";
+        listElement.replaceChildren();
+        renderEmptyState("请稍后重试");
       });
   </script>
 </body>
