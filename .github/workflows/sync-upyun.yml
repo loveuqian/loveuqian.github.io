@@ -1,0 +1,35 @@
+name: 同步又拍云文件列表
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 同步又拍云文件列表
+        env:
+          UPYUN_OPERATOR: ${{ secrets.UPYUN_OPERATOR }}
+          UPYUN_PASSWORD: ${{ secrets.UPYUN_PASSWORD }}
+          UPYUN_PUBLIC_BASE_URL: ${{ secrets.UPYUN_PUBLIC_BASE_URL }}
+          UPYUN_BUCKET: wsf-upyun
+          UPYUN_FOLDER: /
+        run: python3 scripts/sync_upyun.py
+
+      - name: 提交文件列表变化
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- data/files.json; then
+            echo "文件列表没有变化，无需提交。"
+            exit 0
+          fi
+          git add data/files.json
+          git commit -m "同步又拍云文件列表"
+          git push
