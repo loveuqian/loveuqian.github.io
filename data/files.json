@@ -1,35 +1,28 @@
 {
   "bucket": "wsf-upyun",
   "folder": "/",
-  "action_completed_at": "2026-08-25T07:12:58Z",
+  "action_completed_at": "2026-09-05T05:48:58Z",
   "files": [
     {
-      "name": "20260724170210.mp4",
-      "path": "/20260724170210.mp4",
-      "size": 1985904,
-      "last_modified": 1784883743,
-      "download_url": "http://wsf-upyun.test.upcdn.net/20260724170210.mp4"
+      "name": "cmfa-2.11.33-meta-universal-release.apk",
+      "path": "/cmfa-2.11.33-meta-universal-release.apk",
+      "size": 109026349,
+      "last_modified": 1788587267,
+      "download_url": "http://wsf-upyun.test.upcdn.net/cmfa-2.11.33-meta-universal-release.apk"
     },
     {
-      "name": "app-nonRoot-release.apk",
-      "path": "/app-nonRoot-release.apk",
-      "size": 6765523,
-      "last_modified": 1787552912,
-      "download_url": "http://wsf-upyun.test.upcdn.net/app-nonRoot-release.apk"
+      "name": "index.html",
+      "path": "/index.html",
+      "size": 15,
+      "last_modified": 1787714355,
+      "download_url": "http://wsf-upyun.test.upcdn.net/index.html"
     },
     {
-      "name": "kkk_h264.mp4",
-      "path": "/kkk_h264.mp4",
-      "size": 1985904,
-      "last_modified": 1783322887,
-      "download_url": "http://wsf-upyun.test.upcdn.net/kkk_h264.mp4"
-    },
-    {
-      "name": "Moonlight.V+.12.11.9.apk",
-      "path": "/Moonlight.V+.12.11.9.apk",
-      "size": 23567939,
-      "last_modified": 1787627643,
-      "download_url": "http://wsf-upyun.test.upcdn.net/Moonlight.V+.12.11.9.apk"
+      "name": "Moonlight.V+.12.12.2.apk",
+      "path": "/Moonlight.V+.12.12.2.apk",
+      "size": 24411121,
+      "last_modified": 1788587178,
+      "download_url": "http://wsf-upyun.test.upcdn.net/Moonlight.V+.12.12.2.apk"
     }
   ]
 }
